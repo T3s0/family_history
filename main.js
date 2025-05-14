@@ -278,7 +278,7 @@ async function refreshLoginStatus() {
 }
 
 async function log_in_out() {
-    await refreshLoginStatus();
+      await refreshLoginStatus();
     console.log("log_in_out isAuthenticated: " + isAuthenticated);
     if (isAuthenticated) {
         try {
@@ -297,25 +297,26 @@ async function log_in_out() {
     }
     else {
         try {
-            let targetUrl = "";
-            console.log("Logging in", targetUrl);
+            let targetUrl = "https://www.trabinextendedfamilyhistory.org/view-histories"; // <--testing for redirect to app
+console.log("Logging in", targetUrl);
 
-            const options = {
-                authorizationParams: {
-                    redirect_uri: window.location.origin
-                }
-            };
+const options = {
+    authorizationParams: {
+        redirect_uri: "https://www.trabinextendedfamilyhistory.org/view-histories"
+  // This should match what's registered in your Auth0 app settings
+    },
+    appState: { targetUrl }  // Always send targetUrl in appState
+};
 
-            if (targetUrl) {
-                options.appState = { targetUrl };
-            }
-            await auth0Client.loginWithRedirect(options);
+await auth0Client.loginWithRedirect(options);
+
         } catch (err) {
             console.log("Log in failed", err);
         }
 
     }
 }
+
 
 function print_tl() {
     let timelineId = getChartViewState().timelineId;
